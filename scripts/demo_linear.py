@@ -10,6 +10,9 @@ from tracker.simulate import rmse, simulate_track
 
 DT = 1.0
 MEAS_STD = 50.0
+# TESTED
+# chaning ACCEL_STD to a low value makes the error very large once the object turns
+# TODO: Add turning algorithm
 ACCEL_STD = 8.0
 
 def main():
