@@ -27,6 +27,10 @@ class KalmanFilter:
         self.P = np.asarray(P0, dtype=float)
 
     def predict(self):
-        pass
+        # Project estimate forward
+        self.x = self.F @ self.x
+        # Add doubt for time passed
+        self.P = self.F @ self.P @ self.F.T + self.Q
+
     def update(self, z):
         pass
