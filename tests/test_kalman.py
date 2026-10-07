@@ -2,6 +2,12 @@ import pytest
 
 from tracker.kalman import KalmanFilter
 
+def test_noisy_sensor_barely_moves_estimate():
+    pass
+
+def test_precise_sensor_pulls_estimate_torward_reading():
+    pass
+
 def test_1d_update():
     # linear kalman fiter with 1d test
     # Ex: belief 100 (var 25), reading 110 (var 100)
