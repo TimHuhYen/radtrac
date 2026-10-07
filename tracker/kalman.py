@@ -33,4 +33,10 @@ class KalmanFilter:
         self.P = self.F @ self.P @ self.F.T + self.Q
 
     def update(self, z):
-        pass
+        z = np.asarray(z, dtype=float)
+        y = z - self.H @ self.x                     # suprise
+        S = self.H @ self.P @ self.H.T + self.R     # expected suprise
+        K = self.P @ self.H.T @ np.linalg.inv(S)    # trust weight gain
+        self.x = self.x + K @ y                     # blend reading
+        I = np.eye(len(self.x))
+        self.P = (I - K @ self.H) @ self.P          # shrink uncer
