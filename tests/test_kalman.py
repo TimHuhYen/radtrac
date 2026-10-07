@@ -3,6 +3,7 @@ import pytest
 from tracker.kalman import KalmanFilter
 
 def test_1d_update():
+    # linear kalman fiter with 1d test
     # Ex: belief 100 (var 25), reading 110 (var 100)
     kf = KalmanFilter(
         F=[[1]], H=[[1]], Q=[[0]], R=[[100]], x0=[100], P0=[[25]]
