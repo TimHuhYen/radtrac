@@ -1,6 +1,8 @@
 import numpy as np
 
-def radar_measuremet(state, radar_pos=(0.0, 0.0)):
+# shrimple measurement functions for diff sensirs
+
+def radar_measurement(state, radar_pos=(0.0, 0.0)):
     """
     Ideal radar at radar_pos reports: [range (m), bearing (radians)]
 
