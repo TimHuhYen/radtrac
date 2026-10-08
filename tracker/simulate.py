@@ -44,5 +44,5 @@ def simulate_radar_readings(truth, radar_pos, range_std=50.0, bearing_std=0.002,
     """
     rng = np.random.default_rng(seed)
     clean = np.array([radar_measurement(state, radar_pos) for state in truth])
-    noise = rng.nromal(0.0, [range_std, bearing_std], size=clean.shape)
+    noise = rng.normal(0.0, [range_std, bearing_std], size=clean.shape)
     return clean + noise
