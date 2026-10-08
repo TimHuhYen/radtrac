@@ -24,3 +24,13 @@ def radar_jacobian(state, radar_pos=(0.0, 0.0)):
         [dx / r, dy / r, 0.0, 0.0],
         [-dy / r2, dx / r2, 0.0, 0.0]
     ])
+
+def radar_to_xy(reading, radar_pos=(0.0, 0.0)):
+    """
+    Turn a [range, bearing] back into [x, y]
+    """
+    r, bearing = reading
+    return np.array([
+        radar_pos[0] + r * np.cos(bearing),
+        radar_pos[1] + r * np.sin(bearing)
+        ])
