@@ -34,7 +34,7 @@ class ExtendedKalmanFilter(KalmanFilter):
         I = np.eye(len(self.x))
         self.P = (I - K @ H) @ self.P
 
-    def radar_Tracker(dt, accel_std, range_std, bearing_std, first_reading, radar_pos, pos_std=200.0):
+    def radar_tracker(dt, accel_std, range_std, bearing_std, first_reading, radar_pos, pos_std=200.0):
         """
         Building external filter that starts from a first radar reading.
         """
