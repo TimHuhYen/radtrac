@@ -39,7 +39,7 @@ def main():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
     ax1.scatter(raw_xy[:, 0], raw_xy[:, 1], s=6, color="0.7", label="Radar readings")
     ax1.plot(truth[:, 0], truth[:, 1], color="black", label="True path")
-    ax1.plot(est[:, 0], est[:, 1], color="tab:red", label="EFL estimate")
+    ax1.plot(est[:, 0], est[:, 1], color="tab:red", label="EFK estimate")
     ax1.scatter(*RADAR, marker="^", s=80, color="tab:blue", label="Radar")
     ax1.set_xlabel("x (m)")
     ax1.set_ylabel("y (m)")
