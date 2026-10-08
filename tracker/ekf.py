@@ -1,6 +1,7 @@
 import numpy as np
 
 from tracker.kalman import KalmanFilter
+from tracker.sensors import radar_to_xy
 
 class ExtendedKalmanFilter(KalmanFilter):
     """
@@ -32,3 +33,15 @@ class ExtendedKalmanFilter(KalmanFilter):
         self.x = self.x + K @ y
         I = np.eye(len(self.x))
         self.P = (I - K @ H) @ self.P
+
+    def radar_Tracker(dt, accel_std, range_std, bearing_std, first_reading, radar_pos, pos_std=200.0):
+        """
+        Building external filter that starts from a first radar reading.
+        """
+        base = constant_velocity_2d(dt, accel_std, 1.0, [0.0, 0.0])
+        R = np.diag([range_std**2, bearing_std**2])
+
+        xy = radar_to_xy(first_reading, radar_pos)
+        x0 = [xy[0], xy[1], 0.0, 0.0]
+        P0 = np.diag([pos_std**2, pos_std**2, 300.0**2, 300.0**2])
+        return ExtendedKalmanFilter(base.F, base.H, base.Q, R, x0, P0)
