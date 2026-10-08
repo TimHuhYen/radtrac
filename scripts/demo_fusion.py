@@ -53,10 +53,25 @@ def main():
 
     raw_a = np.array([radar_to_xy(z, RADAR_A) for z in reads_a])
     raw_b = np.array([radar_to_xy(z, RADAR_B) for z in reads_b])
-    print(f"")
-    print(f"")
-    print(f"")
-    print(f"")
-    print(f"")
+    print(f"Raw radar A: {rmse(raw_a[10:], truth[10:, :2]):6.1f} m")
+    print(f"Raw radar B: {rmse(raw_b[10:], truth[10:, :2]):6.1f} m")
+    print(f"EKF, A only: {err(est_a):6.1f} m")
+    print(f"EKF, B only: {err(est_b):6.1f} m")
+    print(f"EKF, A + B:  {err(est_ab):6.1f} m")
 
-    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
+    ax1.plot(truth[:, 0], truth[:, 1], color="black", label="True path")
+    ax1.plot(est_ab[:, 0], est_ab[:, 1], color="tab:red", label="Fused estimate")
+    ax1.scatter(*RADAR_A, marker="^", s=80, color="tab:blue", label="Rader A")
+    ax1.scatter(*RADAR_B, marker="^", s=80, color="tab:orange", label="Rader B")
+    ax1.set_xlabel("x (m)")
+    ax1.set_ylabel("y (m)")
+    ax1.set_aspect("equal")
+    ax1.legend()
+
+    t = np.arange(len(truth)) * DT
+    for est, color, name in ((est_a, "tab:blue", "A only"),
+                            (est_b, "tab:orange", "B only"),
+                            (est_ab, "tab:red", "A + B")):
+        ax2.plot(t, np.linalg.norm(est[:, :2] - truth[:, :2], axis=1),
+                 color=color, label="f{name} (RMSE {err(est):.0f} m)")
