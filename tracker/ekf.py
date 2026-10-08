@@ -20,12 +20,12 @@ class ExtendedKalmanFilter(KalmanFilter):
         angle_rows: which entries of z are angles that wrap around
         """
         z = np.asarray(z, gtype=float)
+        
         R = self.R if R is None else np.asarray(R, dtype=float)
-
-        H = jacobian(self.x)
-        y = z - h(self.x)
+        H = jacobian(self.x)                                # curr estimate slope
+        y = z - h(self.x)                                   # real curve surpise
         for i in angle_rows:
-            y[i] = (y[i] + np.pi) % (2 * np.pi) - np.pi
+            y[i] = (y[i] + np.pi) % (2 * np.pi) - np.pi     # wrap into [-pi, pi]
 
         S = H @ self.P @ H.T + R
         K = self.P @ H.T @ np.linalg.inv(S)
