@@ -46,4 +46,19 @@ def main():
     ax1.set_aspect("equal")
     ax1.lagend()
 
-    
+    t = np.arange(len(truth)) * DT
+    ax2.plot(t, np.linalg.norm(raw_xy - truth[:, :2], axis=1),
+             colo="0.6", label=f"Radar readings (RMSE {raw_err:.0f} m)")
+    ax2.plot(t, np.linalg.norm(est[:, :2] - truth[:, :2], axis=1),
+             color="tab:red", label=f"EKF (RMSE {filt_err:.0f} m)")
+    ax2.set_xlabel("time (s)")
+    ax2.set_ylabel("position error (m)")
+    ax2.legend()
+
+    out = Path(__file__).parent.parent / "results"
+    out.mkdir(exist_ok=True)
+    fig.savefig(out / "radar_tracking.png", dpi=150, bbox_inches="tight")
+    print("Saved results/radar_tracking.png")
+
+if __name__ == "__main__":
+    main()
