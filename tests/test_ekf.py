@@ -6,8 +6,8 @@ from tracker.sensors import radar_jacobian, radar_measurement
 
 def make_filter(x0):
     F = np.eye(4)
-    H = np.zeroes((2, 4))               # unused by nonlinear update
-    Q = np.zeroes((4, 4))               
+    H = np.zeros((2, 4))               # unused by nonlinear update
+    Q = np.zeros((4, 4))               
     R = np.diag([10.0**2, 0.001**2])    # 10m range noise, smol bearing noise
     P0 = np.diag([100.0**2, 100.0**2, 50.0**2, 50.0**2])
     return ExtendedKalmanFilter(F, H, Q, R, x0, P0)

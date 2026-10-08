@@ -19,7 +19,7 @@ class ExtendedKalmanFilter(KalmanFilter):
         R: sensor noise from reading (defaults to filter's R)
         angle_rows: which entries of z are angles that wrap around
         """
-        z = np.asarray(z, gtype=float)
+        z = np.asarray(z, dtype=float)
         
         R = self.R if R is None else np.asarray(R, dtype=float)
         H = jacobian(self.x)                                # curr estimate slope
