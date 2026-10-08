@@ -79,8 +79,8 @@ def main():
     ax2.set_ylabel("position error (m)")
     ax2.legend()
 
-    out = Path(__file__) / "results"
-    out.mkdir(exists_ok=True)
+    out = Path(__file__).parent / "results"
+    out.mkdir(exist_ok=True)
     fig.savefig(out / "fusion_tracking.png", dpi=150, bbox_inches="tight")
     print("Saved results/fusion_tracking.png")
 
