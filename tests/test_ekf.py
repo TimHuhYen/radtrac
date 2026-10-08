@@ -43,4 +43,4 @@ def test_bearing_wraps_around_the_seam():
                         radar_jacobian, 
                         angle_rows=(1,)
                         )
-    assert np.linalg.norom(kf.x[:2] - truth[:2]) < 120.0
+    assert np.linalg.norm(kf.x[:2] - truth[:2]) < 120.0
