@@ -38,3 +38,25 @@ def run_tracker(radars, all_readings):
             )
         est.append(kf.x.copy())
     return np.array(est)
+
+def main():
+    truth, _ = simulate_track(dt=DT)
+    reads_a = simulate_radar_readings(truth, RADAR_A, RANGE_STD, BEARING_STD, seed=1)
+    reads_b = simulate_radar_readings(truth, RADAR_B, RANGE_STD, BEARING_STD, seed=2)
+
+    est_a = run_tracker([RADAR_A], [reads_a])
+    est_b = run_tracker([RADAR_B], [reads_b])
+    est_ab = run_tracker([RADAR_A, RADAR_B], [reads_a, reads_b])
+
+    def err(est):
+        return rmse(est[10:, :2], truth[10:, :2])
+
+    raw_a = np.array([radar_to_xy(z, RADAR_A) for z in reads_a])
+    raw_b = np.array([radar_to_xy(z, RADAR_B) for z in reads_b])
+    print(f"")
+    print(f"")
+    print(f"")
+    print(f"")
+    print(f"")
+
+    
