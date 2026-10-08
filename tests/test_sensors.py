@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from tracker.sensors import radar_measurement, radar_jacobian
+from tracker.sensors import radar_measurement, radar_jacobian, radar_to_xy
 
 def test_measurement_known_values():
     z = radar_measurement([3.0, 4.0, 0.0, 0.0])
@@ -30,3 +30,10 @@ def test_jacobian_matches_numeric_nudge():
         down[i] -= eps
         slope = (radar_measurement(up) - radar_measurement(down)) / (2 * eps)
         assert J[:, i] == pytest.approx(slope, abs=1e-6)
+
+def test_radar_to_xy_undo_measurements():
+    state= np.array([5000.0, -2000.0, 0.0, 0.0])
+    radar = (-1000.0, 3000.0)
+    xy = radar_to_xy(radar_measurement(state, radar), radar)
+    assert xy == pytest.approx(state[:2])
+
