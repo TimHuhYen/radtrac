@@ -74,4 +74,15 @@ def main():
                             (est_b, "tab:orange", "B only"),
                             (est_ab, "tab:red", "A + B")):
         ax2.plot(t, np.linalg.norm(est[:, :2] - truth[:, :2], axis=1),
-                 color=color, label="f{name} (RMSE {err(est):.0f} m)")
+                 color=color, label=f"{name} (RMSE {err(est):.0f} m)")
+    ax2.set_xlabel("time (s)")
+    ax2.set_ylabel("position error (m)")
+    ax2.legend()
+
+    out = Path(__file__) / "results"
+    out.mkdir(exists_ok=True)
+    fig.savefig(out / "fusion_tracking.png", dpi=150, bbox_inches="tight")
+    print("Saved results/fusion_tracking.png")
+
+if __name__ == "__main__":
+    main()
