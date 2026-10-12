@@ -33,21 +33,21 @@ def parse_states(payload):
     return rows
 
 def main():
-    out = Path(__file__).parent / "data"
+    out = Path(__file__).parent.parent / "data"
     out.mkdir(exist_ok=True)
     path = out / "huntsville.csv"
     last_time = {} # icao24 -> time of last position saved
 
     with open(path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=COLUMNS)
-        writer.writerheader()
+        writer.writeheader()
         for i in range(N_POLLS):
             try:
                 r = requests.get(URL, params=BOX, timeout=15)
                 if r.status_code == 429:
                     print("Out of credits for today, stopping. :(")
                     break
-                r.raise_for_stats()
+                r.raise_for_status()
                 rows = parse_states(r.json())
             except requests.RequestException as e:
                 print(f"poll {i}: request failed ({e}), skipping...")
