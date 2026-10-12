@@ -9,6 +9,6 @@ def latlon_to_xy(lat, lon, lat0, lon0):
     """
     lat = np.asarray(lat, dtype=float)
     lon = np.asarray(lon, dtype=float)
-    x = np.asarray(lon - lon0) * np.cos(np.radians(lat0)) * EARTH_RADIUS
-    y = np.asarray(lat - lat0) * EARTH_RADIUS
+    x = np.radians(lon - lon0) * np.cos(np.radians(lat0)) * EARTH_RADIUS
+    y = np.radians(lat - lat0) * EARTH_RADIUS
     return x, y
