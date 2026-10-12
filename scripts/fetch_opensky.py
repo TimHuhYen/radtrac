@@ -10,3 +10,8 @@ POLL_SECONDS = 10
 N_POLLS = 90 # like, 15 minutes
 COLUMNS = ["icao24", "callsign", "time", "lat", "lon", "altitude", "speed", "heading", "on_ground"]
 
+def parse_states(payload):
+    pass
+
+def main():
+    pass
