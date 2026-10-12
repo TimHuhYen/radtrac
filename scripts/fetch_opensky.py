@@ -48,8 +48,20 @@ def main():
                     print("Out of credits for today, stopping. :(")
                     break
                 r.raise_for_stats()
-                rows = parse_states(r.jason())
+                rows = parse_states(r.json())
             except requests.RequestException as e:
                 print(f"poll {i}: request failed ({e}), skipping...")
                 time.sleep(POLL_SECONDS)
                 continue
+
+            new = [row for row in rows if last_time.get(row["icao24"]) != row["time"]]
+            for row in new:
+                last_time[row["icao24"]] = row["time"]
+                writer.writerow(row)
+            f.flush()
+            print(f"poll {i + 1}/{N_POLLS}: {len(rows)} planes in box, {len(new)} new positions")
+            time.sleep(POLL_SECONDS)
+    print(f"Saved {path}")
+
+if __name__ == "__main__":
+    main()
