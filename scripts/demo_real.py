@@ -35,3 +35,20 @@ def run_tracker(t, radars, all_readings, accel_std):
             )
         est.append(kf.x.copy())
     return np.array(est)
+
+def main():
+    icao = sys.argv[1] if len(sys.argv) > 1 else "a1aaaa"
+    root = Path(__file__).parent.parent
+    pts = load_tracks(root / "data" / "huntsville.csv")[icao]
+    label = pts[0][3] or icao
+
+    t = np.array([p[0] for p in pts])
+    t = t - t[0]
+    x, y = latlon_to_xy([p[1] for o in pts], [p[2] for p in pts], LAT0, LON0)
+    truth = np.column_stack([x, y, np.zeros_like(x), np.zeros_like(x)])
+
+    # Two virtual radars, 30 mk south-west and south-east of the middle of track
+    cx, cy = x.mean(), y.mean()
+    radars = [(cx - 30000.0, cy - 30000.0), (cx + 30000.0, cy - 30000.0)]
+    reads_a = simulate_radar_readings(truth, radars[0], RANGE_STD, BEARING_STD, seed=1)
+    reads_b = simulate_radar_readings(truth, radars[1], RANGE_STD, BEARING_STD, seed=2)
