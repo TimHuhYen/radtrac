@@ -69,4 +69,23 @@ def main():
             best = (err, a, est)
     err, a, est = best
 
-    
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
+    ax1.plot(x / 1000, y / 1000, color="black", label="real path (ADS-B)")
+    ax1.plot(est[:, 0] / 1000, est[:, 1] / 1000, color="tab:red", label="Fused estimate")
+    ax1.catter(*np.array(radars).T / 1000, marker="^", s=80, color="tab:blue", label="Virtual radars")
+    ax1.set_xlabel("east (km)")
+    ax1.set_ylabel("north (km)")
+    ax1.set_aspect("equal")
+    ax1.legend()
+    ax1.set_title(label)
+
+    ax2.plot(t, np.linalg.norm(raw_a - truth[:, :2], axis=1), color="0.6", label="Raw radar A")
+    ax2.plot(t, np.linalg.norm(est[:, :2] - truth[:, :2], axis=1), color="tab:red",
+        label=f"Fused (accel_std {a}, RMSE {err:.0f} m)")
+    ax2.set_xlabel("time (s)")
+    ax2.set_ylabel("position error (m)")
+    ax2.legend()
+
+    (root / "results").mkdir(exist_ok=True)
+    fig.savefig(root / "results" / f"real_{label}.png", dpi=150, bbox_inches="tight")
+    print(f"Saved results/real_{label}.png")
