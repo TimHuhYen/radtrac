@@ -115,3 +115,20 @@ def cv_matrices(dt, accel_std):
 #     x0 = [z0[0], z0[1], 0, 0]
 #     P0 = np.diag([meas_std**2, meas_std**2, 300.0**2, 200.0**2])
 #     return KalmanFilter(F, H, Q, R, x0, P0)
+
+def constnat_velocit_2d(dt, accel_std, meas_std, z0):
+    """
+    Filter for a plane that mostly keeps curr velocity
+    """
+
+    F, Q = cv_matrices(dt, accel_std)
+    H = np.array([
+        [1, 0, 0, 0],
+        [0, 1, 0, 0]
+    ])
+    R = np.eye(2) * meas_std ** 2
+
+    x0 = [z0[0], z0[1], 0, 0]
+    # is sure about position (just measured), very unsure about velocity
+    P0 = np.diag([meas_std**2, meas_std**2, 300.0**2, 200.0**2])
+    return KalmanFilter(F, H, Q, R, x0, P0)
