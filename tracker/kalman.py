@@ -59,7 +59,7 @@ def cv_matrices(dt, accel_std):
         [dt**4 / 4, dt**3 / 2],
         [dt**3 / 2, dt**2],
     ])
-    Q = np.zeroes((4, 4))
+    Q = np.zeros((4, 4))
     Q[np.ix_([0, 2], [0, 2])] = block # x pos and x vel
     Q[np.ix_([1, 3], [1, 3])] = block # y pos and y vel
     return F, Q
@@ -116,7 +116,7 @@ def cv_matrices(dt, accel_std):
 #     P0 = np.diag([meas_std**2, meas_std**2, 300.0**2, 200.0**2])
 #     return KalmanFilter(F, H, Q, R, x0, P0)
 
-def constnat_velocit_2d(dt, accel_std, meas_std, z0):
+def constant_velocity_2d(dt, accel_std, meas_std, z0):
     """
     Filter for a plane that mostly keeps curr velocity
     """
