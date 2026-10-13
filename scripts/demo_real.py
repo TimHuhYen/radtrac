@@ -52,3 +52,21 @@ def main():
     radars = [(cx - 30000.0, cy - 30000.0), (cx + 30000.0, cy - 30000.0)]
     reads_a = simulate_radar_readings(truth, radars[0], RANGE_STD, BEARING_STD, seed=1)
     reads_b = simulate_radar_readings(truth, radars[1], RANGE_STD, BEARING_STD, seed=2)
+
+    s = 3 # skip first few points while filter locks on
+    raw_a = np.array([radar_to_xy(z, radars[0]) for z in reads_a])
+    raw_b = np.array([radar_to_xy(z, radars[1]) for z in reads_b])
+    print(f"{label}: {len(t)} points over {t[-1]:.0f} s")
+    print(f"Raw radar A: {rmse(raw_a[s:], truth[s:, :2]):6.1f} m")
+    print(f"Raw radar B: {rmse(raw_b[s:], truth[s:, :2]):6.1f} m")
+
+    best = None
+    for a in ACCEL_STDS:
+        est = run_tracker(t, radars, [reads_a, reads_b], a)
+        err = rmse(est[s:, :2], truth[s:, :2])
+        print(f"Fused, accel_std {a:4.1f}: {err:6.1f} m")
+        if best is None or err < best[0]:
+            best = (err, a, est)
+    err, a, est = best
+
+    
