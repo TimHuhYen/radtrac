@@ -44,7 +44,7 @@ def main():
 
     t = np.array([p[0] for p in pts])
     t = t - t[0]
-    x, y = latlon_to_xy([p[1] for o in pts], [p[2] for p in pts], LAT0, LON0)
+    x, y = latlon_to_xy([p[1] for p in pts], [p[2] for p in pts], LAT0, LON0)
     truth = np.column_stack([x, y, np.zeros_like(x), np.zeros_like(x)])
 
     # Two virtual radars, 30 mk south-west and south-east of the middle of track
@@ -72,7 +72,7 @@ def main():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5))
     ax1.plot(x / 1000, y / 1000, color="black", label="real path (ADS-B)")
     ax1.plot(est[:, 0] / 1000, est[:, 1] / 1000, color="tab:red", label="Fused estimate")
-    ax1.catter(*np.array(radars).T / 1000, marker="^", s=80, color="tab:blue", label="Virtual radars")
+    ax1.scatter(*np.array(radars).T / 1000, marker="^", s=80, color="tab:blue", label="Virtual radars")
     ax1.set_xlabel("east (km)")
     ax1.set_ylabel("north (km)")
     ax1.set_aspect("equal")
@@ -89,3 +89,6 @@ def main():
     (root / "results").mkdir(exist_ok=True)
     fig.savefig(root / "results" / f"real_{label}.png", dpi=150, bbox_inches="tight")
     print(f"Saved results/real_{label}.png")
+
+if __name__ == "__main__":
+    main()
