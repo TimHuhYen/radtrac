@@ -26,12 +26,12 @@ class KalmanFilter:
         self.x = np.asarray(x0, dtype=float)
         self.P = np.asarray(P0, dtype=float)
 
-    def predict(self):
+    def predict(self, F=None, Q=None):
         # Project estimate forward
         # Pass F n Q to override since we need a varying dt
         F = self.F if F is None else F
         Q = self.Q if Q is None else Q
-        self.x = self.F @ self.x
+        self.x = F @ self.x
         self.P = F @ self.P @ F.T + Q # Add doubt for time passed
 
     def update(self, z):

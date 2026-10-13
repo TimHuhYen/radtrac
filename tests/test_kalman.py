@@ -52,7 +52,8 @@ def test_predict_with_a_different_time_step():
     assert np.allclose(kf.x, [500.0, -250.0, 100.0, -50.0])
 
 def test_longer_gap_means_more_doubt():
-    short = constant_velocity_2d(1.0, 10., 10.0, [0, 0])
+    short = constant_velocity_2d(1.0, 1.0, 10.0, [0, 0])
     long_ = constant_velocity_2d(1.0, 1.0, 10.0, [0, 0])
     short.predict(*cv_matrices(1.0, 1.0))
     long_.predict(*cv_matrices(20.0, 1.0))
+    assert np.trace(long_.P) > np.trace(short.P)
