@@ -30,3 +30,21 @@ def test_two_far_apart_planes_keep_separate_identities():
     first = dict((j, tid) for tid, j in ids[0])     # dot index -> track id at scan 0
     for pairs in ids:
         assert dict((j, tid) for tid, j in pairs) == first
+
+def test_dot_far_from_every_track_starts_a_new_track():
+    mt = make_tracker()
+    for k in range(5):
+        mt.step(10.0 * k, np.array([dot(-5000.0 + 1000.0 * k, 0.0)]))
+    mt.step(50.0, np.array([dot(0.0, 0.0), dot(40000.0, 30000.0)]))
+    assert len(mt.tracks) == 2
+
+def test_track_is_dropped_after_too_many_misses():
+    mt = make_tracker()
+    for k in range(5):
+        mt.step(10.0 * k, np.array([dot(-5000.0 + 1000.0 * k, 0.0)]))
+    assert len(mt.tracks) == 1
+    for k in range(5, 5 + mt.max_misses):
+        mt.step(10.0 * k, np.empty((0, 2)))
+        assert len(mt.tracks) == 1      # still costing
+    mt.step(10.0 * (5 + mt.max_misses), np.empty((0, 2)))
+    assert len(mt.tracks) == 0
