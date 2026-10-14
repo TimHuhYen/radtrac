@@ -83,7 +83,7 @@ class MultiTracker:
                 tr.kf.update_nonlinear(
                     Z[j],
                     partial(radar_measurement, radar_pos=self.radar_pos),
-                    partial(radar_jacobian, radar_pos=self.radar_pos)
+                    partial(radar_jacobian, radar_pos=self.radar_pos),
                     angle_rows=(1,),
                 )
                 tr.hits += 1
