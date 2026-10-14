@@ -1,15 +1,15 @@
-Object Tracking Using Kalman Filter
+# radtrac: Aircraft Tracking with Kalman Filters
 
-(Readings from ***bzarg Kalman Filter with Images***)
+A radar-style tracker. Built with Python, NumPy. Tested on live flight data over Huntsville, AL (OpenSky).
 
-Tracking and predicting objects next estimated position with time steps.
+A Kalman filter repeats two steps: predict where the object should be using a motion model, then corrects that guess using a noisy measurement, weighting each by how much it can be trusted. 
 
-TODO:
-    Done: Implement linear simple system to test Kalman Filter
-    Done: Apply Kalman Filter tests
-    Done: Implement extended Kalman Filter for radar-styles measurements
-    Done: Fuse multiple radars
+## What it does
 
+    - Linear Kalman filter and constant velocity plane model
+    - Extended Kalman filter (ekf) for radar style readings (range and bearing), including hangling of the +/-100 degree angle wrap around (pi-issue)
+    - Fusing two radars into one position estimate
+    - Flight data from OpenSky Network (ADS-B tracks), converted from latitude/longitude to local x/y meters around Huntsville, AL area
 
-
-    WIP: Use real flight data from OpenSky Network
+## Results
+...
