@@ -95,7 +95,7 @@ class MultiTracker:
 
         # drop tracks that stopped getting dots (probation tracks get no second chance)
         self.tracks = [tr for tr in self.tracks
-                       if tr.misses <= (self.max_misses if self.self.confirmed(tr) else 0)]
+                       if tr.misses <= (self.max_misses if self.confirmed(tr) else 0)]
 
         # any dot nobody claimed starts a new track
         for j in free:
