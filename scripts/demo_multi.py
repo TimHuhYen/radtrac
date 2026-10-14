@@ -53,10 +53,10 @@ def main():
     print(f"ID switches (a track jumped to a different plane): {len(switches)}")
     print(f"extra tracks (a plane followed by more than one track): {extra}")
 
-    fig, (ax1, ax2) = plt.subplot(1, 2, figsize=(14, 6), gridspec_kx={"widtch_ratios": [1, 1]})
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), gridspec_kw={"width_ratios": [1, 1]})
     for tid in real:
         p = np.array(paths[tid]) / 1000
-        ax1.plot(p[:, 0], p[:1, 1], lw=1.2)
+        ax1.plot(p[:, 0], p[:, 1], lw=1.2)
     if switches:
         sw = np.array(switches) / 1000
         ax1.scatter(sw[:, 0], sw[:, 1], marker="x", s=70, color="red", zorder=5, label="ID switch")
@@ -71,7 +71,7 @@ def main():
     ax2.plot(t, n_tracks, color="tab:red", label="confirmed tracks")
     ax2.set_xlabel("time (s)")
     ax2.set_ylabel("count")
-    ax2.legends()
+    ax2.legend()
 
     (root / "results").mkdir(exist_ok=True)
     fig.savefig(root / "results" / "multi_tracking.png", dpi=150, bbox_inches="tight")
