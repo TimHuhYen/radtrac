@@ -99,4 +99,13 @@ class MultiTracker:
 
         # any dot nobody claimed starts a new track
         for j in free:
-            
+            kf = radar_tracker(1.0, self.accel_std, self.range_std, self.bearing_std,
+                               Z[j], self.radar_pos)
+            kf.P = np.diag([200.0**2, 200.0**2, self.vel_std**2, self.vel_std**2])
+            self.tracks.append(Track(self.next_id, kf, t))
+            used.append((self.next_id, j))
+            self.next_id += 1
+
+        for tr in self.tracks:
+            tr.path.append((t, tr.kf.x[0], tr.kf.x[1]))
+        return used
