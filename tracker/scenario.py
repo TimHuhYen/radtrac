@@ -26,8 +26,8 @@ def make_scans(tracks, radar_pos, lat0, lon0, scan_seconds=10.0, range_std=50.0,
     "z":     array of [range, bearing]
     "owner": which plane made each readings. FOR SCORING ONLY ToT
     """
-    t_start = min(pts[0][0] for pts in tracks.value())
-    t_end = max(pts[-1][0] for pts in tracks.value())
+    t_start = min(pts[0][0] for pts in tracks.values())
+    t_end = max(pts[-1][0] for pts in tracks.values())
     grid = np.arange(t_start, t_end, scan_seconds)
     ids = list(tracks)
     positions = np.array([resample(tracks[i], grid, lat0, lon0) for i in ids]) # planes x scans x 2

@@ -56,13 +56,14 @@ def test_resample_interpolates_and_blanks_outside():
 
 def test_scans_have_one_unlabeled_dot_per_plane_present():
     tracks = {"a": straight_plane(0, 100), "b": straight_plane(50, 150, lat_start=34.7)}
-    scans, truth = make_scans(tracks, (0.0, -60000.0), 34.6, -86.7, range_std=1e-9, bearing_std=1e-9, p_detect=1.0)
+    scans, truth = make_scans(tracks, (0.0, -60000.0), 34.6, -86.7, 
+                              range_std=1e-9, bearing_std=1e-9, p_detect=1.0)
 
     counts = [len(s["z"]) for s in scans]
     assert counts[0] == 1 and max(counts) == 2 # b has not appeared yet at the start
     # with no noise, every dat londs exaclt on its owner's true position >:)
     for s in scans:
-        for z, owner in zip(s["z"], s["ower"]):
+        for z, owner in zip(s["z"], s["owner"]):
             k = int(round((s["t"] - scans[0]["t"]) / 10.0))
             assert radar_to_xy(z, (0.0, -60000.0)) == pytest.approx(truth[owner][k], abs=1e-3)
 
